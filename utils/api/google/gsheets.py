@@ -32,8 +32,7 @@ class Gsheet():
         
             
     #return list with album data, if not found return empty list
-    def get_album_data(self, title, artist):
-        obj = Album()
+    def get_album_data(self, title, artist, obj : Album):
         data_row = []
         for row in self.inv_extract:
             if((title in row ) and (artist in row)):
@@ -48,8 +47,6 @@ class Gsheet():
         obj.set_genres(data_row[2])
         obj.set_tracks(data_row[3])
         obj.set_art(data_row[4])
-        
-        return obj
     
     
     #Appends the album to the end of the inventory.

@@ -10,7 +10,7 @@
 
 from utils.api.google.gsheets import Gsheet
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QLineEdit, QPushButton, QWidget
 from handler import CastAlbumUtil, UtilMediator, SearchUtil
 from utils.Album import Album
 
@@ -25,10 +25,7 @@ class Ui_MainWindow(object):
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
         self.stackedWidget.setGeometry(QtCore.QRect(70, 50, 911, 661))
         self.stackedWidget.setObjectName("stackedWidget")
-        
         self.search_page = QtWidgets.QWidget()
-        
-        
         self.search_page.setObjectName("search_page")
         
         self.label = QtWidgets.QLabel(self.search_page)
@@ -135,6 +132,20 @@ class Ui_MainWindow(object):
         self.menuSearch.setTitle(_translate("MainWindow", "File"))
         self.actionSearch_Album.setText(_translate("MainWindow", "Search Album"))
         self.actionView_Inventory.setText(_translate("MainWindow", "View Inventory"))
+        
+class PopupWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        
+    def init_ui(self):
+        button = QPushButton('CLICK', self)
+        button.move(30, 30)
+        button.clicked.connect()
+        
+    def show_cont(self):
+        text , ok
+        
+        
 
 
 if __name__ == "__main__":

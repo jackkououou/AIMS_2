@@ -5,6 +5,7 @@ from utils.Album import Album
 from utils.api.google.gsheets import Gsheet
 from utils.api.lfm import LastFM
 import urllib.request
+from AlbumPopUp import Ui_Dialog_Album
 
 class Mediator(ABC):
     def notify(self, sender: object, event : str):
@@ -37,10 +38,10 @@ class SearchUtil(BaseComponent):
         else:
             self.mediator.notify(self, 'NOTIN_SHEET')
             
-    def gsheets_fetch_album(self) -> Album :
-        alb_obj = self._sheet.get_album_data(title=self._album, artist=self._artist)
+    def gsheets_fetch_album(self, alb_obj : Album):
+        self._sheet.get_album_data(title=self._album, artist=self._artist, obj= alb_obj)
         print (alb_obj)
-        self._alb_obj = alb_obj
+        
     
     def lfm_fetch_album(self) -> Album:
         alb_obj = Album(self._artist, self._album)
@@ -71,6 +72,27 @@ class CastAlbumUtil(BaseComponent):
         self._artist_label.setText(alb_obj.get_album_artist())
         
         self._stacked_widg.setCurrentWidget(self._page)
+
+class CastAlbumUtil(BaseComponent):
+    def __init__(self, dialog_object : Ui_Dialog_Album):
+        super().__init__(mediator= None)
+        self._dialog = dialog_object
+    
+    def cast_album(self):
+        self.mediator.notify(self, 'CASTING_ALBUM')
+        
+    def cast_to_screen(self, alb_obj : Album):
+        url = alb_obj.get_art()
+        data = urllib.request.urlopen(url).read()
+        image = QtGui.QImage()
+        image.loadFromData(data)
+        self._dialog.label.setPixmap(QtGui.QPixmap(image))
+        
+        Dialog = QtWidgets.QDialog()
+        self._dialog.setupUi(Dialog)
+        Dialog.show()
+        
+        
         
 class UtilMediator(Mediator):
     _alb_obj = Album()
@@ -82,11 +104,14 @@ class UtilMediator(Mediator):
     def notify(self, sender: object, event: str):
         if event == 'IN_SHEET':
             print('In gsheet... extracting')
-            self._alb_obj = self._search_component.gsheets_fetch_album()
+            self._search_component.gsheets_fetch_album(self._alb_obj)
         if event == 'NOTIN_SHEET':
             print('Not in gsheet... fetching from Lfm')
             self._alb_obj = self._search_component.lfm_fetch_album()
         if event == 'CASTING_ALBUM':
-            print('Showing album')
-            self._caster_component.cast_to_screen(self._alb_obj)
+            if self._alb_obj == None:
+                print('No Album Obj')
+            else:
+                print('Showing album')
+                self._caster_component.cast_to_screen(self._alb_obj)
 
