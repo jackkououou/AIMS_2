@@ -414,3 +414,14 @@ def style_pushbutton(palette : QtGui.QPalette):
     brush.setStyle(QtCore.Qt.SolidPattern)
     palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ToolTipText, brush)
     
+def style_warehouse(palette : QtGui.QPalette):
+    brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+    brush.setStyle(QtCore.Qt.SolidPattern)
+    palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
+    brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+    brush.setStyle(QtCore.Qt.SolidPattern)
+    palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
+    brush = QtGui.QBrush(QtGui.QColor(148, 166, 187))
+    brush.setStyle(QtCore.Qt.SolidPattern)
+    palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
+    

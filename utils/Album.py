@@ -1,9 +1,6 @@
 from .api.lfm import LastFM
 class Album:
-    
-    
-    #So when the album is created Artist and Album are entered for initializtion
-    #After that the object passes Art and Alb to the lastfm api the get genre list, song list, and album art
+    #Album() with no arguments creates an empty class. With 2 arguments, (artist : str, album : str) calls LastFM for data
     def __init__(self, *args): #args[0] : artist, args[1] ; album
         if len(args) < 1 :
             self.artist = ''
@@ -12,7 +9,7 @@ class Album:
             self.genre_list = []
             self.track_list = []
         
-        else:
+        elif  len(args) == 2:
             artist_in = args[0]
             album_in = args[1]
             self.lfm = LastFM(artist_in, album_in)
@@ -21,9 +18,7 @@ class Album:
             self.image_url = self.lfm.get_image_url()
             self.genre_list = self.lfm.get_genre_list()
             self.track_list = self.lfm.get_track_list()
-    
-    
-        
+
     #HERE place alternate __init__ here for reading off the database
     def set_art(self, img : str):
         self.image_url = img

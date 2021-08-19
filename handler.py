@@ -3,9 +3,8 @@ from abc import ABC, abstractmethod
 from PyQt5 import QtCore, QtGui, QtWidgets
 from utils.Album import Album
 from utils.api.google.gsheets import Gsheet
-from utils.api.lfm import LastFM
 import urllib.request
-from AlbumPopUp import Ui_Dialog_Album
+from UI.AlbumPopUp import Ui_Dialog
 
 class Mediator(ABC):
     def notify(self, sender: object, event : str):
@@ -32,7 +31,6 @@ class SearchUtil(BaseComponent):
         self._alb_obj = None
         
     def search_album(self):
-        
         if(self._sheet.album_exist(artist=self._artist, album=self._album)):
             self.mediator.notify(self, 'IN_SHEET')
         else:
@@ -42,7 +40,6 @@ class SearchUtil(BaseComponent):
         self._sheet.get_album_data(title=self._album, artist=self._artist, obj= alb_obj)
         print (alb_obj)
         
-    
     def lfm_fetch_album(self) -> Album:
         alb_obj = Album(self._artist, self._album)
         print(alb_obj)
@@ -50,31 +47,7 @@ class SearchUtil(BaseComponent):
         return alb_obj
 
 class CastAlbumUtil(BaseComponent):
-    def __init__(self, img_label : QtWidgets.QLabel, artist_label : QtWidgets.QLabel, album_label : QtWidgets.QLabel, display_page : QtWidgets.QWidget, stack_widget : QtWidgets.QStackedWidget):
-        super().__init__(mediator = None)
-        self._img = img_label
-        self._artist_label = artist_label
-        self._album_label = album_label
-        self._stacked_widg = stack_widget
-        self._page = display_page
-    def cast_album(self):
-        self.mediator.notify(self, 'CASTING_ALBUM')
-            
-    def cast_to_screen(self, alb_obj : Album):
-        #setting image
-        url = alb_obj.get_art()
-        data = urllib.request.urlopen(url).read()
-        image = QtGui.QImage()
-        image.loadFromData(data)
-        self._img.setPixmap(QtGui.QPixmap(image))
-        
-        self._album_label.setText(alb_obj.get_album_title())
-        self._artist_label.setText(alb_obj.get_album_artist())
-        
-        self._stacked_widg.setCurrentWidget(self._page)
-
-class CastAlbumUtil(BaseComponent):
-    def __init__(self, dialog_object : Ui_Dialog_Album):
+    def __init__(self, dialog_object : Ui_Dialog):
         super().__init__(mediator= None)
         self._dialog = dialog_object
     
@@ -86,13 +59,21 @@ class CastAlbumUtil(BaseComponent):
         data = urllib.request.urlopen(url).read()
         image = QtGui.QImage()
         image.loadFromData(data)
-        self._dialog.label.setPixmap(QtGui.QPixmap(image))
+        self._dialog.AlbumImage.setPixmap(QtGui.QPixmap(image))
+        self._dialog.AlbumName.setText(alb_obj.get_album_title())
+        self._dialog.ArtistName.setText(alb_obj.get_album_artist())
         
+        genres = alb_obj.get_genres()
+        for genre in genres:
+            self._dialog.listWidget.addItem(genre)
+        
+        tracks = alb_obj.get_tracks()
+        for index, track in enumerate(tracks):
+            self._dialog.listWidget_2.addItem(f"{index + 1}. {track}")
+            
         Dialog = QtWidgets.QDialog()
         self._dialog.setupUi(Dialog)
         Dialog.show()
-        
-        
         
 class UtilMediator(Mediator):
     _alb_obj = Album()

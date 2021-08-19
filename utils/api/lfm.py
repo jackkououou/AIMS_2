@@ -18,7 +18,9 @@ class LastFM:
         }
         
         response = requests.get(url, headers=self.HEADERS, params=payload)
+        self.status_code = response.status_code
         self.album_json = response.json()
+        
     
     def get_track_list (self):
         

@@ -1,8 +1,8 @@
 from handler import CastAlbumUtil, Mediator, SearchUtil, UtilMediator
 import sys
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow
-from aims2 import Ui_MainWindow
-from AlbumPopUp import Ui_Dialog_Album
+from UI.aims2 import Ui_MainWindow
+from UI.AlbumPopUp import Ui_Dialog
 
 class MainWindow:
     def __init__(self):
@@ -16,7 +16,7 @@ class MainWindow:
         
     def search_album_dialog(self, ui_window : Ui_MainWindow):
         dialog = QDialog()
-        popup = Ui_Dialog_Album()
+        popup = Ui_Dialog()
         popup.setupUi(dialog)
         handler = SearchUtil(self.ui.ArtistName, self.ui.lineEdit)
         caster = CastAlbumUtil(popup)
@@ -25,9 +25,6 @@ class MainWindow:
         caster.cast_album()
         dialog.exec_()
     
-        
-        
-        
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     main_win = MainWindow()
