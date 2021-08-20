@@ -1,13 +1,16 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from PyQt5 import QtCore, QtGui, QtWidgets
+from requests.models import encode_multipart_formdata
 from utils.Album import Album
 from utils.api.google.gsheets import Gsheet
 import urllib.request
 from UI.AlbumPopUp import Ui_Dialog
+from UI.WareHousePopUp import Ui_Warehous_Dialog
 
 class Mediator(ABC):
     def notify(self, sender: object, event : str):
+        #model function, filled in by children, damn lazy parents
         pass
     
 class BaseComponent:
@@ -74,25 +77,88 @@ class CastAlbumUtil(BaseComponent):
         Dialog = QtWidgets.QDialog()
         self._dialog.setupUi(Dialog)
         Dialog.show()
-        
+
+
 class UtilMediator(Mediator):
     _alb_obj = Album()
-    def __init__(self, search_component : SearchUtil , cast_component : CastAlbumUtil):
-        self._search_component = search_component
+    _table = []        
+    def __init__(self, search : SearchUtil, caster : CastAlbumUtil):
+        
+        self._search_component = search
         self._search_component.mediator = self
-        self._caster_component = cast_component
+        self._caster_component = caster
         self._caster_component.mediator = self
+        
     def notify(self, sender: object, event: str):
+        
         if event == 'IN_SHEET':
             print('In gsheet... extracting')
             self._search_component.gsheets_fetch_album(self._alb_obj)
+        
         if event == 'NOTIN_SHEET':
             print('Not in gsheet... fetching from Lfm')
             self._alb_obj = self._search_component.lfm_fetch_album()
+        
         if event == 'CASTING_ALBUM':
             if self._alb_obj == None:
                 print('No Album Obj')
             else:
                 print('Showing album')
                 self._caster_component.cast_to_screen(self._alb_obj)
+        
+class WareMediator(Mediator):
+    
+    def __init__(self, handler : WarehouseLoader, caster : CastWarehouse):
+        self._handler = handler
+        self._handler.mediator = self
+        self._caster = caster
+        self._caster.mediator = self
+        self._table = []
+    
+    def notify(self, sender : object, event : str):
+        if event == 'SET_TABLE':
+            self._handler.set_table(self._table)
+        if event == 'CAST_TABLE':
+            self._caster.cast_table_to_screen(self._table)
+        
+class WarehouseLoader(BaseComponent):
+    def __init__(self):
+        super().__init__(mediator= None)
+        self._sheet = Gsheet()
+        self._block = []
+        
+    def download_sheet(self):
+        self.mediator.notify(self, 'SET_TABLE')
+        
+    def set_table(self, table : list):
 
+        self._block = self._sheet.get_all_sheet()
+        
+        
+        for row_index, row in enumerate (self._block) :
+           table.append([])
+           table[row_index].append(row[1])
+           table[row_index].append(row[0])
+           table[row_index].append(row[5])
+           table[row_index].append(row[6])
+           table[row_index].append(row[7])
+        
+        
+class CastWarehouse(BaseComponent):
+    def __init__(self, dialog_obj : Ui_Warehous_Dialog):
+        super().__init__(mediator= None)
+        self._dialog = dialog_obj
+        
+    def cast_table(self):
+        self.mediator.notify(self, 'CAST_TABLE')
+        
+    def cast_table_to_screen(self, table : list):
+        self._dialog.tableWidget.setRowCount(len(table))
+        for row_index, row in enumerate(table):
+            self._dialog.tableWidget.setItem(row_index + 1, 0 , QtWidgets.QTableWidgetItem(row[0]))
+            self._dialog.tableWidget.setItem(row_index + 1, 1 , QtWidgets.QTableWidgetItem(row[1]))
+            self._dialog.tableWidget.setItem(row_index + 1, 2 , QtWidgets.QTableWidgetItem(row[2]))
+            self._dialog.tableWidget.setItem(row_index + 1, 3 , QtWidgets.QTableWidgetItem(row[3]))
+            self._dialog.tableWidget.setItem(row_index + 1, 4 , QtWidgets.QTableWidgetItem(row[4]))
+        
+        

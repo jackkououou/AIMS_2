@@ -47,7 +47,9 @@ class Gsheet():
         obj.set_genres(data_row[2])
         obj.set_tracks(data_row[3])
         obj.set_art(data_row[4])
-    
+        obj.set_availale(data_row[5])
+        obj.set_reserved(data_row[6])
+        obj.set_total(data_row[7])    
     
     #Appends the album to the end of the inventory.
     #When adding to Google Sheets string and int and floats are really the only safe option so any list has to be converted into a string
@@ -99,6 +101,9 @@ class Gsheet():
         
         self.inventory.update_cells(cell_list=cells)
         self.refresh()
+        
+    def get_all_sheet(self):
+        return self.inv_extract
                 
          
     
