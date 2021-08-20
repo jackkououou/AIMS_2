@@ -11,12 +11,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from . import stylesheet
 
 class Ui_MainWindow(object):
+    def __init__(self):
+        self.sizeX = 900
+        self.sizeY = 600
     def setupUi(self, MainWindow):
         
         #   MAIN WINDOW
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(926, 632)
+        MainWindow.resize(self.sizeX, self.sizeY)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -36,11 +39,12 @@ class Ui_MainWindow(object):
         #~~~~~~~~~TAB WIDGET~~~~~~#
         
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 931, 631))
+        self.tabWidget.setGeometry(QtCore.QRect(0, 0, self.sizeX, self.sizeY))
         
         palette = QtGui.QPalette()
         stylesheet.style_tab_widget(palette)       
         self.tabWidget.setPalette(palette)
+        
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         self.tabWidget.setFont(font)
@@ -88,11 +92,18 @@ class Ui_MainWindow(object):
         
         #~~~~Warehouse Tab~~~~
         self.MyWareHouse = QtWidgets.QWidget()
-        palette = QtGui.QPalette()
-        stylesheet.style_warehouse(palette)        
-        self.MyWareHouse.setPalette(palette)
         self.MyWareHouse.setObjectName("MyWareHouse")
+        self.MyWareHouse.setStyleSheet("background-color:rgb(148, 166, 187)")
         self.tabWidget.addTab(self.MyWareHouse, "")
+        #TableWidget
+        self.load_table_button = QtWidgets.QPushButton(self.MyWareHouse)
+        self.load_table_button.setGeometry(QtCore.QRect(400, 300, 100, 30))
+        self.load_table_button.setText("Load Inventory")
+        palette = QtGui.QPalette()
+        stylesheet.style_pushbutton(palette)
+        self.load_table_button.setStyleSheet("background-color:rgb(180, 180, 180)")
+        
+        
         
         #~~~~Shop Tab
         self.MyShop = QtWidgets.QWidget()
