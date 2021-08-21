@@ -62,8 +62,7 @@ class Gsheet():
             print('Album already in inventory')
         else:
             self.inv_extract.append(value)
-
-        
+            print('appended to inv_extract')
             #add the row to the spreadsheet
             
     def remove_album(self, title, artist):

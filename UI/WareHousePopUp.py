@@ -17,6 +17,8 @@ class Ui_Warehous_Dialog(object):
         Warehous_Dialog.setEnabled(False)
         Warehous_Dialog.resize(900, 600)
         Warehous_Dialog.setMaximumSize(QtCore.QSize(900, 600))
+        
+        
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -158,7 +160,7 @@ class Ui_Warehous_Dialog(object):
         
         
         self.tableWidget = QtWidgets.QTableWidget(Warehous_Dialog)
-        self.tableWidget.setEnabled(False)
+        self.tableWidget.setEnabled(True)
         self.tableWidget.setGeometry(QtCore.QRect(10, 10, 880, 580))
         
         
@@ -194,6 +196,10 @@ class Ui_Warehous_Dialog(object):
         self.tableWidget.setStyleSheet("background-color:rgb(197, 206, 216)")
         
         self.tableWidget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectColumns)
+        self.tableWidget.setAlternatingRowColors(True)
+        self.tableWidget.setSortingEnabled(True)
+        
+        
         self.tableWidget.setObjectName("tableWidget")
         
         #Setting headers
@@ -216,7 +222,7 @@ class Ui_Warehous_Dialog(object):
         self.tableWidget.setColumnWidth(2, 140)
         self.tableWidget.setColumnWidth(3, 140)
         self.tableWidget.setColumnWidth(4, 140)
-        
+              
         self.retranslateUi(Warehous_Dialog)
         QtCore.QMetaObject.connectSlotsByName(Warehous_Dialog)
 

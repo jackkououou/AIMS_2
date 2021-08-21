@@ -1,7 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from PyQt5 import QtCore, QtGui, QtWidgets
-from requests.models import encode_multipart_formdata
 from utils.Album import Album
 from utils.api.google.gsheets import Gsheet
 import urllib.request
@@ -28,8 +27,8 @@ class BaseComponent:
 class SearchUtil(BaseComponent):
     def __init__(self, artist : QtWidgets.QLineEdit, title : QtWidgets.QLineEdit):
         super().__init__(mediator = None)
-        self._artist = artist.text()
-        self._album = title.text()
+        self._artist = artist.text().upper()
+        self._album = title.text().upper()
         self._sheet = Gsheet()
         self._alb_obj = None
         
