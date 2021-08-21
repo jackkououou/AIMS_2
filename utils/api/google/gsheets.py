@@ -58,28 +58,13 @@ class Gsheet():
         genre_str = '*!*'.join(obj.get_genres())
         track_str = '*!*'.join(obj.get_tracks())
         value = [obj.get_album_title(), obj.get_album_artist(), genre_str, track_str, obj.get_art() , 0, 0, 0]
-        if (self.album_exist):
+        if (self.album_exist(artist= obj.get_album_artist(), album= obj.get_album_title())):
             print('Album already in inventory')
         else:
             self.inv_extract.append(value)
+
+        
             #add the row to the spreadsheet
-        
-        
-        
-    def add_album(self, title, artist):
-        new_album = Album(artist_in=artist, album_in=title)
-        genre_str = '*!*'.join(new_album.get_genres())
-        track_str = '*!*'.join(new_album.get_tracks())
-        value = [new_album.get_album_title(), new_album.get_album_artist(), genre_str, track_str, new_album.get_art() , 0, 0, 0]
-        
-        #Check if already in inv
-        clear = True
-        for row in self.inv_extract:
-            if((title in row) and (artist in row)):
-                clear = False
-                break
-        if clear:
-            self.inv_extract.append(value)
             
     def remove_album(self, title, artist):
         
@@ -106,7 +91,7 @@ class Gsheet():
         return self.inv_extract
                 
          
-    
+
 
     
         

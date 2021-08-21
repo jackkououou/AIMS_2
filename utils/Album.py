@@ -8,9 +8,9 @@ class Album:
             self.image_url = ''
             self.genre_list = []
             self.track_list = []
-            self.available = 0
-            self.reserved = 0
-            self.total = 0
+            self.available = -1
+            self.reserved = -1
+            self.total = -1
         
         elif  len(args) == 2:
             artist_in = args[0]
@@ -21,9 +21,9 @@ class Album:
             self.image_url = self.lfm.get_image_url()
             self.genre_list = self.lfm.get_genre_list()
             self.track_list = self.lfm.get_track_list()
-            self.available = 0
-            self.reserved = 0
-            self.total = 0
+            self.available = -1
+            self.reserved = -1
+            self.total = -1
 
     #HERE place alternate __init__ here for reading off the database
     def set_art(self, img : str):
@@ -72,7 +72,7 @@ class Album:
     def get_total(self):
         return self.total
     
-    def set_total(self, num : int):
+    def set_total(self, num : int) -> int:
         self.total = num
 
    

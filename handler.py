@@ -65,7 +65,8 @@ class CastAlbumUtil(BaseComponent):
         self._dialog.AlbumImage.setPixmap(QtGui.QPixmap(image))
         self._dialog.AlbumName.setText(alb_obj.get_album_title())
         self._dialog.ArtistName.setText(alb_obj.get_album_artist())
-        
+        self._dialog.alb_artist = f'{alb_obj.get_album_artist()}'
+        self._dialog.alb_title = f'{alb_obj.get_album_title()}'
         genres = alb_obj.get_genres()
         for genre in genres:
             self._dialog.listWidget.addItem(genre)
@@ -73,8 +74,19 @@ class CastAlbumUtil(BaseComponent):
         tracks = alb_obj.get_tracks()
         for index, track in enumerate(tracks):
             self._dialog.listWidget_2.addItem(f"{index + 1}. {track}")
-            
+        
+        is_in = int(alb_obj.get_total())
         Dialog = QtWidgets.QDialog()
+        if (is_in > -1) :
+            self._dialog.Genre.setText('Album is in inventory')
+            self._dialog.AddButton.setText('Album exists')
+            self._dialog.AddButton.setEnabled(False)
+            
+            
+            
+        
+        
+        
         self._dialog.setupUi(Dialog)
         Dialog.show()
 
@@ -125,6 +137,7 @@ class WarehouseLoader(BaseComponent):
     def __init__(self):
         super().__init__(mediator= None)
         self._sheet = Gsheet()
+        self._sheet.refresh()
         self._block = []
         
     def download_sheet(self):
@@ -132,7 +145,8 @@ class WarehouseLoader(BaseComponent):
         
     def set_table(self, table : list):
 
-        self._block = self._sheet.get_all_sheet()
+        self._sheet.refresh()
+        self._block = self._sheet.inv_extract
         
         
         for row_index, row in enumerate (self._block) :
@@ -155,10 +169,10 @@ class CastWarehouse(BaseComponent):
     def cast_table_to_screen(self, table : list):
         self._dialog.tableWidget.setRowCount(len(table))
         for row_index, row in enumerate(table):
-            self._dialog.tableWidget.setItem(row_index + 1, 0 , QtWidgets.QTableWidgetItem(row[0]))
-            self._dialog.tableWidget.setItem(row_index + 1, 1 , QtWidgets.QTableWidgetItem(row[1]))
-            self._dialog.tableWidget.setItem(row_index + 1, 2 , QtWidgets.QTableWidgetItem(row[2]))
-            self._dialog.tableWidget.setItem(row_index + 1, 3 , QtWidgets.QTableWidgetItem(row[3]))
-            self._dialog.tableWidget.setItem(row_index + 1, 4 , QtWidgets.QTableWidgetItem(row[4]))
+            self._dialog.tableWidget.setItem(row_index , 0 , QtWidgets.QTableWidgetItem(row[0]))
+            self._dialog.tableWidget.setItem(row_index , 1 , QtWidgets.QTableWidgetItem(row[1]))
+            self._dialog.tableWidget.setItem(row_index , 2 , QtWidgets.QTableWidgetItem(row[2]))
+            self._dialog.tableWidget.setItem(row_index , 3 , QtWidgets.QTableWidgetItem(row[3]))
+            self._dialog.tableWidget.setItem(row_index , 4 , QtWidgets.QTableWidgetItem(row[4]))
         
         

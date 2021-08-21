@@ -13,21 +13,22 @@ class MainWindow:
         self.ui.pushButton.clicked.connect(self.search_album_dialog)
         self.ui.load_table_button.clicked.connect(self.show_warehouse)
         
+       
+        
     def show(self):
         self.main_win.show()
         
     def search_album_dialog(self):
-        dialog = QDialog()
-        popup = Ui_Dialog()
-        popup.setupUi(dialog)
-        
+        alb_dialog = QDialog()
+        alb_popup = Ui_Dialog()
+        alb_popup.setupUi(alb_dialog)
         handler = SearchUtil(self.ui.ArtistName, self.ui.lineEdit)
-        caster = CastAlbumUtil(popup)
+        caster = CastAlbumUtil(alb_popup)
         mediater = UtilMediator(handler, caster)
         handler.search_album()
         caster.cast_album()
         
-        dialog.exec_()
+        alb_dialog.exec_()
         
     def show_warehouse(self):
         dialog = QDialog()
