@@ -1,11 +1,14 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QAbstractItemDelegate, QListWidget, QListWidgetItem
+from PyQt5.QtCore import QObject, Qt
+
 from utils.Album import Album
 from utils.api.google.gsheets import Gsheet
 import urllib.request
 from UI.AlbumPopUp import Ui_Dialog
-from UI.WareHousePopUp import Ui_Warehous_Dialog
+from UI.WareHousePopUp import ReadOnlyDelegate, Ui_Warehous_Dialog
 
 class Mediator(ABC):
     def notify(self, sender: object, event : str):
@@ -69,6 +72,7 @@ class CastAlbumUtil(BaseComponent):
         genres = alb_obj.get_genres()
         for genre in genres:
             self._dialog.listWidget.addItem(genre)
+            
         
         tracks = alb_obj.get_tracks()
         for index, track in enumerate(tracks):
@@ -78,7 +82,7 @@ class CastAlbumUtil(BaseComponent):
         Dialog = QtWidgets.QDialog()
         if (is_in > -1) :
             self._dialog.Genre.setText('Album is in inventory')
-            self._dialog.AddButton.setText('Album exists')
+            self._dialog.AddButton.setText(f'Album exists')
             self._dialog.AddButton.setEnabled(False)
             
             
@@ -168,6 +172,11 @@ class CastWarehouse(BaseComponent):
     def cast_table_to_screen(self, table : list):
         self._dialog.tableWidget.setRowCount(len(table))
         for row_index, row in enumerate(table):
+            
+            delegate = ReadOnlyDelegate(self._dialog.tableWidget)
+            self._dialog.tableWidget.setItemDelegateForColumn(0, delegate)
+            self._dialog.tableWidget.setItemDelegateForColumn(1, delegate)
+           
             self._dialog.tableWidget.setItem(row_index , 0 , QtWidgets.QTableWidgetItem(row[0]))
             self._dialog.tableWidget.setItem(row_index , 1 , QtWidgets.QTableWidgetItem(row[1]))
             self._dialog.tableWidget.setItem(row_index , 2 , QtWidgets.QTableWidgetItem(row[2]))

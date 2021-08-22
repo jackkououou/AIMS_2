@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Warehous_Dialog(object):
     def setupUi(self, Warehous_Dialog):
         Warehous_Dialog.setObjectName("Warehous_Dialog")
-        Warehous_Dialog.setEnabled(False)
+        Warehous_Dialog.setEnabled(True)
         Warehous_Dialog.resize(900, 600)
         Warehous_Dialog.setMaximumSize(QtCore.QSize(900, 600))
         
@@ -160,7 +160,6 @@ class Ui_Warehous_Dialog(object):
         
         
         self.tableWidget = QtWidgets.QTableWidget(Warehous_Dialog)
-        self.tableWidget.setEnabled(True)
         self.tableWidget.setGeometry(QtCore.QRect(10, 10, 880, 580))
         
         
@@ -195,7 +194,7 @@ class Ui_Warehous_Dialog(object):
         self.tableWidget.setPalette(palette)
         self.tableWidget.setStyleSheet("background-color:rgb(197, 206, 216)")
         
-        self.tableWidget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectColumns)
+        #self.tableWidget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.tableWidget.setAlternatingRowColors(True)
         self.tableWidget.setSortingEnabled(True)
         
@@ -229,6 +228,7 @@ class Ui_Warehous_Dialog(object):
     def retranslateUi(self, Warehous_Dialog):
         _translate = QtCore.QCoreApplication.translate
         Warehous_Dialog.setWindowTitle(_translate("Warehous_Dialog", "Dialog"))
+        self.tableWidget.setSortingEnabled(True)
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("Warehous_Dialog", "Artist"))
         item = self.tableWidget.horizontalHeaderItem(1)
@@ -239,6 +239,10 @@ class Ui_Warehous_Dialog(object):
         item.setText(_translate("Warehous_Dialog", "inv2"))
         item = self.tableWidget.horizontalHeaderItem(4)
         item.setText(_translate("Warehous_Dialog", "inv3"))
+        
+class ReadOnlyDelegate(QtWidgets.QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        return 
 
 
 if __name__ == "__main__":
