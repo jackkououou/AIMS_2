@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from re import split
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QAbstractItemDelegate, QDialog, QListWidget, QListWidgetItem
-from PyQt5.QtCore import QObject, Qt
+from PyQt5.QtCore import QItemSelection, QObject, Qt
 
 from utils.Album import Album
 from utils.api.google.gsheets import Gsheet
@@ -183,12 +183,8 @@ class CastWarehouse(BaseComponent):
     def cast_table_to_screen(self, table : list):
         self._dialog.tableWidget.setRowCount(len(table))
         delegate = ReadOnlyDelegate(self._dialog.tableWidget)
+        self._dialog.tableWidget.setItemDelegateForColumn(0, delegate)
         for row_index, row in enumerate(table):
-            
-            
-            self._dialog.tableWidget.setItemDelegateForRow(row_index, delegate)
-
-            
             
             name_list = []
             name_list.append(row[0])
@@ -201,27 +197,29 @@ class CastWarehouse(BaseComponent):
         
         self._dialog.tableWidget.selectionModel().selectionChanged.connect(self.on_selectionChanged)
         
-    def on_selectionChanged(self, selected):
+    def on_selectionChanged(self, selected : QItemSelection ):
         row_num = int
         str_list = []
         for ix in selected.indexes():
                
             row_num = ix.row()
+            column_num =  ix.column()
             egg = self._dialog.tableWidget.selectedItems()
             str_list = egg[0].text().split(' - ')
+            print (row_num)
             print(str_list[0])
-            print(str_list[1])
+
+            if column_num == 0: 
+                alb_dialog = QDialog()
+                alb_popup = Ui_Dialog()
+                alb_popup.setupUi(alb_dialog)
+                handler = SearchUtil(str_list[0], str_list[1])
+                caster = CastAlbumUtil(alb_popup)
+                mediater = UtilMediator(handler, caster)
+                handler.search_album()
+                caster.cast_album()
         
-        alb_dialog = QDialog()
-        alb_popup = Ui_Dialog()
-        alb_popup.setupUi(alb_dialog)
-        handler = SearchUtil(str_list[0], str_list[1])
-        caster = CastAlbumUtil(alb_popup)
-        mediater = UtilMediator(handler, caster)
-        handler.search_album()
-        caster.cast_album()
-        
-        alb_dialog.exec_()
+                alb_dialog.exec_()
         
 
         
