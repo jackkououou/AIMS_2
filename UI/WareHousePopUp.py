@@ -199,6 +199,7 @@ class Ui_Warehous_Dialog(object):
         self.tableWidget.setSortingEnabled(True)
         
         
+        
         self.tableWidget.setObjectName("tableWidget")
         
         #Setting headers
