@@ -209,10 +209,6 @@ class Ui_Dialog(object):
         self.label.setGeometry(QtCore.QRect(410, 20, 47, 13))
         self.label.setObjectName("label")
         
-        self.lineEdit = QtWidgets.QLineEdit(Dialog)
-        self.lineEdit.setGeometry(QtCore.QRect(410, 450, 71, 20))
-        self.lineEdit.setObjectName("lineEdit")
-        
         self.AddButton = QtWidgets.QPushButton(Dialog)
         self.AddButton.setGeometry(QtCore.QRect(10, 450, 131, 23))
         self.AddButton.setObjectName("AddButton")
@@ -222,6 +218,10 @@ class Ui_Dialog(object):
         self.pushButton_2.setGeometry(QtCore.QRect(10, 490, 131, 23))
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_2.clicked.connect(self.remove_album)
+        
+        self.lineEdit = QtWidgets.QLineEdit(Dialog)
+        self.lineEdit.setGeometry(QtCore.QRect(410, 450, 71, 20))
+        self.lineEdit.setObjectName("lineEdit")
         
         self.lineEdit_2 = QtWidgets.QLineEdit(Dialog)
         self.lineEdit_2.setGeometry(QtCore.QRect(490, 450, 71, 20))
@@ -234,7 +234,8 @@ class Ui_Dialog(object):
         self.pushButton_3 = QtWidgets.QPushButton(Dialog)
         self.pushButton_3.setGeometry(QtCore.QRect(490, 480, 75, 23))
         self.pushButton_3.setObjectName("pushButton_3")
-        self.pushButton_3.clicked.connect(self.save_inv)
+        ################PRRRRRRRRRRROOOOOOOOOBLEM########################
+        self.pushButton_3.clicked.connect(self.save_inv(self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3()))
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -247,11 +248,10 @@ class Ui_Dialog(object):
         self.ArtistName.setText(_translate("Dialog", "Aritist Name"))
         self.Genre.setText(_translate("Dialog", "Tags"))
         self.label.setText(_translate("Dialog", "Song List"))
-        self.lineEdit.setText(_translate("Dialog", "Inventory"))
+        
         self.AddButton.setText(_translate("Dialog", "Add to Inventory"))
         self.pushButton_2.setText(_translate("Dialog", "Remove from Inventory"))
-        self.lineEdit_2.setText(_translate("Dialog", "In Stock"))
-        self.lineEdit_3.setText(_translate("Dialog", "Ordered"))
+        
         self.pushButton_3.setText(_translate("Dialog", "Save"))
 
     def add_album(self):
@@ -278,13 +278,13 @@ class Ui_Dialog(object):
             
         
         
-            
-    def save_inv(self):
+       #######################################################     
+    def save_inv(self, num1 : str, num2 : str, num3 : str):
         sheet = Gsheet()
         print('Adding inv nums')
-        self.inv = self.lineEdit.text()
-        self.instock = self.lineEdit_2.text()
-        self.ordered = self.lineEdit_3.text()
+        self.inv = num1
+        self.instock = num2
+        self.ordered = num3
         sheet.edit_inv_numbers(self.alb_artist, self.alb_title, self.inv, self.instock, self.ordered)
         
     
