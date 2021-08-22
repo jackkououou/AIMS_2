@@ -235,7 +235,7 @@ class Ui_Dialog(object):
         self.pushButton_3.setGeometry(QtCore.QRect(490, 480, 75, 23))
         self.pushButton_3.setObjectName("pushButton_3")
         ################PRRRRRRRRRRROOOOOOOOOBLEM########################
-        self.pushButton_3.clicked.connect(self.save_inv(self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3()))
+        self.pushButton_3.clicked.connect(self.save_inv)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -279,13 +279,14 @@ class Ui_Dialog(object):
         
         
        #######################################################     
-    def save_inv(self, num1 : str, num2 : str, num3 : str):
+    def save_inv(self):
         sheet = Gsheet()
         print('Adding inv nums')
-        self.inv = num1
-        self.instock = num2
-        self.ordered = num3
-        sheet.edit_inv_numbers(self.alb_artist, self.alb_title, self.inv, self.instock, self.ordered)
+        print(self.lineEdit.text())
+        print(self.inv)
+        print(self.lineEdit_2.text())
+        print(self.lineEdit_3.text())
+        #sheet.edit_inv_numbers(self.alb_artist, self.alb_title, self.inv, self.instock, self.ordered)
         
     
 if __name__ == "__main__":

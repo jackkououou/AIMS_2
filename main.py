@@ -11,7 +11,6 @@ class MainWindow:
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.main_win)
         self.ui.pushButton.clicked.connect(self.search_album_dialog)
-        
         self.ui.load_table_button.clicked.connect(self.show_warehouse)
         
     def show(self):
