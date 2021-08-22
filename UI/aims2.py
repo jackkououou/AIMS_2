@@ -108,12 +108,12 @@ class Ui_MainWindow(object):
         #~~~~Shop Tab
         self.MyShop = QtWidgets.QWidget()
         self.MyShop.setObjectName("MyShop")
-        self.tabWidget.addTab(self.MyShop, "")
+        
         
         #~~~~Orders Tab
         self.MyOrders = QtWidgets.QWidget()
         self.MyOrders.setObjectName("MyOrders")
-        self.tabWidget.addTab(self.MyOrders, "")
+        
         
         
         

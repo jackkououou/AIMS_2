@@ -1,7 +1,8 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from re import split
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QAbstractItemDelegate, QListWidget, QListWidgetItem
+from PyQt5.QtWidgets import QAbstractItemDelegate, QDialog, QListWidget, QListWidgetItem
 from PyQt5.QtCore import QObject, Qt
 
 from utils.Album import Album
@@ -28,10 +29,10 @@ class BaseComponent:
         self._mediator = mediator
 
 class SearchUtil(BaseComponent):
-    def __init__(self, artist : QtWidgets.QLineEdit, title : QtWidgets.QLineEdit):
+    def __init__(self, artist : str, title : str):
         super().__init__(mediator = None)
-        self._artist = artist.text().upper()
-        self._album = title.text().upper()
+        self._artist = artist.upper()
+        self._album = title.upper()
         self._sheet = Gsheet()
         self._alb_obj = None
         
@@ -86,10 +87,15 @@ class CastAlbumUtil(BaseComponent):
             self._dialog.AddButton.setEnabled(False)
             self._dialog.pushButton_2.setEnabled(True)
             self._dialog.pushButton_3.setEnabled(True)
+            self._dialog.lineEdit.setText(alb_obj.get_total())
+            self._dialog.lineEdit_2.setText(alb_obj.get_availabe())
+            self._dialog.lineEdit_3.setText(alb_obj.get_reserved())
         else:
             self._dialog.AddButton.setEnabled(True)
             self._dialog.pushButton_2.setEnabled(False)
             self._dialog.pushButton_3.setEnabled(False)
+            
+        
             
             
             
@@ -176,12 +182,14 @@ class CastWarehouse(BaseComponent):
         
     def cast_table_to_screen(self, table : list):
         self._dialog.tableWidget.setRowCount(len(table))
+        delegate = ReadOnlyDelegate(self._dialog.tableWidget)
         for row_index, row in enumerate(table):
             
-            delegate = ReadOnlyDelegate(self._dialog.tableWidget)
+            
             self._dialog.tableWidget.setItemDelegateForRow(row_index, delegate)
 
-            self._dialog.tableWidget.selectionModel().selectionChanged.connect(self.on_selectionChanged)
+            
+            
             name_list = []
             name_list.append(row[0])
             name_list.append(row[1])
@@ -190,8 +198,31 @@ class CastWarehouse(BaseComponent):
             self._dialog.tableWidget.setItem(row_index , 1 , QtWidgets.QTableWidgetItem(row[2]))
             self._dialog.tableWidget.setItem(row_index , 2 , QtWidgets.QTableWidgetItem(row[3]))
             self._dialog.tableWidget.setItem(row_index , 3 , QtWidgets.QTableWidgetItem(row[4]))
-
+        
+        self._dialog.tableWidget.selectionModel().selectionChanged.connect(self.on_selectionChanged)
+        
     def on_selectionChanged(self, selected):
+        row_num = int
+        str_list = []
         for ix in selected.indexes():
-               egg = self._dialog.tableWidget.selectedItems()
-               print(egg[0].text())
+               
+            row_num = ix.row()
+            egg = self._dialog.tableWidget.selectedItems()
+            str_list = egg[0].text().split(' - ')
+            print(str_list[0])
+            print(str_list[1])
+        
+        alb_dialog = QDialog()
+        alb_popup = Ui_Dialog()
+        alb_popup.setupUi(alb_dialog)
+        handler = SearchUtil(str_list[0], str_list[1])
+        caster = CastAlbumUtil(alb_popup)
+        mediater = UtilMediator(handler, caster)
+        handler.search_album()
+        caster.cast_album()
+        
+        alb_dialog.exec_()
+        
+
+        
+               
