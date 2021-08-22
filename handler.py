@@ -84,6 +84,12 @@ class CastAlbumUtil(BaseComponent):
             self._dialog.Genre.setText('Album is in inventory')
             self._dialog.AddButton.setText(f'Album exists')
             self._dialog.AddButton.setEnabled(False)
+            self._dialog.pushButton_2.setEnabled(True)
+            self._dialog.pushButton_3.setEnabled(True)
+        else:
+            self._dialog.AddButton.setEnabled(True)
+            self._dialog.pushButton_2.setEnabled(False)
+            self._dialog.pushButton_3.setEnabled(False)
             
             
             
@@ -159,8 +165,7 @@ class WarehouseLoader(BaseComponent):
            table[row_index].append(row[5])
            table[row_index].append(row[6])
            table[row_index].append(row[7])
-        
-        
+
 class CastWarehouse(BaseComponent):
     def __init__(self, dialog_obj : Ui_Warehous_Dialog):
         super().__init__(mediator= None)
@@ -174,13 +179,19 @@ class CastWarehouse(BaseComponent):
         for row_index, row in enumerate(table):
             
             delegate = ReadOnlyDelegate(self._dialog.tableWidget)
-            self._dialog.tableWidget.setItemDelegateForColumn(0, delegate)
-            self._dialog.tableWidget.setItemDelegateForColumn(1, delegate)
-           
-            self._dialog.tableWidget.setItem(row_index , 0 , QtWidgets.QTableWidgetItem(row[0]))
-            self._dialog.tableWidget.setItem(row_index , 1 , QtWidgets.QTableWidgetItem(row[1]))
-            self._dialog.tableWidget.setItem(row_index , 2 , QtWidgets.QTableWidgetItem(row[2]))
-            self._dialog.tableWidget.setItem(row_index , 3 , QtWidgets.QTableWidgetItem(row[3]))
-            self._dialog.tableWidget.setItem(row_index , 4 , QtWidgets.QTableWidgetItem(row[4]))
-        
-        
+            self._dialog.tableWidget.setItemDelegateForRow(row_index, delegate)
+
+            self._dialog.tableWidget.selectionModel().selectionChanged.connect(self.on_selectionChanged)
+            name_list = []
+            name_list.append(row[0])
+            name_list.append(row[1])
+            art_title = ' - '.join(name_list)
+            self._dialog.tableWidget.setItem(row_index , 0 , QtWidgets.QTableWidgetItem(art_title))
+            self._dialog.tableWidget.setItem(row_index , 1 , QtWidgets.QTableWidgetItem(row[2]))
+            self._dialog.tableWidget.setItem(row_index , 2 , QtWidgets.QTableWidgetItem(row[3]))
+            self._dialog.tableWidget.setItem(row_index , 3 , QtWidgets.QTableWidgetItem(row[4]))
+
+    def on_selectionChanged(self, selected):
+        for ix in selected.indexes():
+               egg = self._dialog.tableWidget.selectedItems()
+               print(egg[0].text())

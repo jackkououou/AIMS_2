@@ -202,7 +202,7 @@ class Ui_Warehous_Dialog(object):
         self.tableWidget.setObjectName("tableWidget")
         
         #Setting headers
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(4)
         self.tableWidget.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
@@ -212,15 +212,14 @@ class Ui_Warehous_Dialog(object):
         self.tableWidget.setHorizontalHeaderItem(2, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(4, item)
+        
         
         #setting Col width
         self.tableWidget.setColumnWidth(0, 220)
         self.tableWidget.setColumnWidth(1, 250)
         self.tableWidget.setColumnWidth(2, 140)
         self.tableWidget.setColumnWidth(3, 140)
-        self.tableWidget.setColumnWidth(4, 140)
+        
               
         self.retranslateUi(Warehous_Dialog)
         QtCore.QMetaObject.connectSlotsByName(Warehous_Dialog)
@@ -230,14 +229,12 @@ class Ui_Warehous_Dialog(object):
         Warehous_Dialog.setWindowTitle(_translate("Warehous_Dialog", "Dialog"))
         self.tableWidget.setSortingEnabled(True)
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("Warehous_Dialog", "Artist"))
+        item.setText(_translate("Warehous_Dialog", "Artist - Album"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("Warehous_Dialog", "Album"))
-        item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("Warehous_Dialog", "Inv"))
-        item = self.tableWidget.horizontalHeaderItem(3)
+        item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("Warehous_Dialog", "inv2"))
-        item = self.tableWidget.horizontalHeaderItem(4)
+        item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("Warehous_Dialog", "inv3"))
         
 class ReadOnlyDelegate(QtWidgets.QStyledItemDelegate):

@@ -272,15 +272,19 @@ class Ui_Dialog(object):
         exe = sheet.remove_album(self.alb_title, self.alb_artist)
         if exe == 1:
             print('removed')
+            
         else:
             print('failed to remove')
+            
+        
+        
             
     def save_inv(self):
         sheet = Gsheet()
         print('Adding inv nums')
         self.inv = self.lineEdit.text()
-        instock = self.lineEdit_2.text()
-        ordered = self.lineEdit_3.text()
+        self.instock = self.lineEdit_2.text()
+        self.ordered = self.lineEdit_3.text()
         sheet.edit_inv_numbers(self.alb_artist, self.alb_title, self.inv, self.instock, self.ordered)
         
     

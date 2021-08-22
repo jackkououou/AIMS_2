@@ -13,8 +13,6 @@ class MainWindow:
         self.ui.pushButton.clicked.connect(self.search_album_dialog)
         self.ui.load_table_button.clicked.connect(self.show_warehouse)
         
-       
-        
     def show(self):
         self.main_win.show()
         

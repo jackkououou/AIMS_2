@@ -64,20 +64,32 @@ class Gsheet():
             self.inv_extract.append(value)
             print('appended to inv_extract')
             #add the row to the spreadsheet
-            
+    
+    def edit_inv_numbers(self, artist : str, title : str, inv : str, instock : str, ordered : str ):
+        for row_index, row in enumerate(self.inv_extract):
+            if(title in row) and (artist in row):
+                self.inv_extract[row_index][5] = inv
+                self.inv_extract[row_index][6] = instock
+                self.inv_extract[row_index][7] = ordered
+                break
+                
+        
+        
     def remove_album(self, title, artist):
         
         #self.inventory.findall(query= artist,in_column= 1)
         for row_index, row in enumerate (self.inv_extract):
             if(title in row ) and (artist in row ):
                 self.inv_extract.pop(row_index)
-                return 1
+                self.update_sheets()
+                self.refresh()
+                return int(1)
        
-        return 0
+        return int(0)
             
     #Changes made to inv_ext are merged into the sheets page
     def update_sheets(self) -> None:
-        
+        self.inventory.clear()
         cells = []
         for row_index, row in enumerate(self.inv_extract):
             for col_index, val in enumerate(row):
