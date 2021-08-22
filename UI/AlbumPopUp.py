@@ -17,6 +17,10 @@ class Ui_Dialog(object):
         super().__init__()
         self.alb_artist = ''
         self.alb_title = ''
+        self.inv = ''
+        self.instock = ''
+        self.ordered = ''
+        
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(722, 549)
@@ -212,10 +216,12 @@ class Ui_Dialog(object):
         self.AddButton = QtWidgets.QPushButton(Dialog)
         self.AddButton.setGeometry(QtCore.QRect(10, 450, 131, 23))
         self.AddButton.setObjectName("AddButton")
+        self.AddButton.clicked.connect(self.add_album)
         
         self.pushButton_2 = QtWidgets.QPushButton(Dialog)
         self.pushButton_2.setGeometry(QtCore.QRect(10, 490, 131, 23))
         self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_2.clicked.connect(self.remove_album)
         
         self.lineEdit_2 = QtWidgets.QLineEdit(Dialog)
         self.lineEdit_2.setGeometry(QtCore.QRect(490, 450, 71, 20))
@@ -228,6 +234,7 @@ class Ui_Dialog(object):
         self.pushButton_3 = QtWidgets.QPushButton(Dialog)
         self.pushButton_3.setGeometry(QtCore.QRect(490, 480, 75, 23))
         self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_3.clicked.connect(self.save_inv)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -258,7 +265,25 @@ class Ui_Dialog(object):
             print('added')
         else:
             print('failed to add')
-
+            
+    def remove_album(self):
+        sheet = Gsheet()
+        print('removing album')
+        exe = sheet.remove_album(self.alb_title, self.alb_artist)
+        if exe == 1:
+            print('removed')
+        else:
+            print('failed to remove')
+            
+    def save_inv(self):
+        sheet = Gsheet()
+        print('Adding inv nums')
+        self.inv = self.lineEdit.text()
+        instock = self.lineEdit_2.text()
+        ordered = self.lineEdit_3.text()
+        sheet.edit_inv_numbers(self.alb_artist, self.alb_title, self.inv, self.instock, self.ordered)
+        
+    
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
