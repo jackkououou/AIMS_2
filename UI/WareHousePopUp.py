@@ -273,7 +273,7 @@ class Ui_Warehous_Dialog(object):
             sheet.edit_inv_numbers(artist_and_title[0], artist_and_title[1], inventories[row_index], in_stocks[row_index], orders[row_index])
             
         sheet.update_sheets()
-        
+         
             
             
         

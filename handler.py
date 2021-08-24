@@ -86,14 +86,14 @@ class CastAlbumUtil(BaseComponent):
             self._dialog.AddButton.setText(f'Album exists')
             self._dialog.AddButton.setEnabled(False)
             self._dialog.pushButton_2.setEnabled(True)
-            self._dialog.pushButton_3.setEnabled(True)
+            
             self._dialog.lineEdit.setText(alb_obj.get_total())
             self._dialog.lineEdit_2.setText(alb_obj.get_availabe())
             self._dialog.lineEdit_3.setText(alb_obj.get_reserved())
         else:
             self._dialog.AddButton.setEnabled(True)
             self._dialog.pushButton_2.setEnabled(False)
-            self._dialog.pushButton_3.setEnabled(False)
+            
             
         
             
