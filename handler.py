@@ -184,6 +184,7 @@ class CastWarehouse(BaseComponent):
         self._dialog.tableWidget.setRowCount(len(table))
         delegate = ReadOnlyDelegate(self._dialog.tableWidget)
         self._dialog.tableWidget.setItemDelegateForColumn(0, delegate)
+        self._dialog.tableWidget.setItemDelegateForColumn(2, delegate)
         for row_index, row in enumerate(table):
             
             name_list = []
