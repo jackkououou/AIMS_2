@@ -66,9 +66,12 @@ class Gsheet():
             #add the row to the spreadsheet
     
     def edit_inv_numbers(self, artist : str, title : str, inv : str, instock : str, ordered : str ):
+        
         for row_index, row in enumerate(self.inv_extract):
             if(title in row) and (artist in row):
                 self.inv_extract[row_index][5] = inv
+                instock_num = int(inv) - int(ordered)
+                instock = str(instock_num)
                 self.inv_extract[row_index][6] = instock
                 self.inv_extract[row_index][7] = ordered
                 break

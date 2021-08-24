@@ -231,12 +231,6 @@ class Ui_Dialog(object):
         self.lineEdit_3.setGeometry(QtCore.QRect(570, 450, 71, 20))
         self.lineEdit_3.setObjectName("lineEdit_3")
         
-        self.pushButton_3 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_3.setGeometry(QtCore.QRect(490, 480, 75, 23))
-        self.pushButton_3.setObjectName("pushButton_3")
-        ################PRRRRRRRRRRROOOOOOOOOBLEM########################
-        self.pushButton_3.clicked.connect(self.save_inv)
-
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
@@ -252,7 +246,6 @@ class Ui_Dialog(object):
         self.AddButton.setText(_translate("Dialog", "Add to Inventory"))
         self.pushButton_2.setText(_translate("Dialog", "Remove from Inventory"))
         
-        self.pushButton_3.setText(_translate("Dialog", "Save"))
 
     def add_album(self):
         sheet = Gsheet()
@@ -275,18 +268,6 @@ class Ui_Dialog(object):
             
         else:
             print('failed to remove')
-            
-        
-        
-       #######################################################     
-    def save_inv(self):
-        sheet = Gsheet()
-        print('Adding inv nums')
-        print(self.lineEdit.text())
-        print(self.inv)
-        print(self.lineEdit_2.text())
-        print(self.lineEdit_3.text())
-        #sheet.edit_inv_numbers(self.alb_artist, self.alb_title, self.inv, self.instock, self.ordered)
         
     
 if __name__ == "__main__":
